@@ -23,7 +23,7 @@ public class Main {
         String readLine = "";
         try {
 
-            File f = new File("../../input/input.txt");
+            File f = new File("./input/input.txt");
 
             BufferedReader b = new BufferedReader(new FileReader(f));
 
@@ -55,9 +55,17 @@ public class Main {
         }
 
         Scanner scanner = new Scanner(productionsUnparsed);
-        while ((readLine = scanner.nextLine())!=null) {
+        while (scanner.hasNextLine()) {
+            readLine = scanner.nextLine();
             productions.add(readLine.split("->"));
         }
 
+        PDA pushDown = new PDA(nonTerminals, terminals, startingSymbol, productions);
+        System.out.print(pushDown);
+
     }
+
+
+
+
 }
