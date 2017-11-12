@@ -1,9 +1,6 @@
 package com.chomskygrammars;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 public class PDA {
 
@@ -82,13 +79,13 @@ public class PDA {
         return result;
     }
 
-    public String processString(String input) {
+    private String processString(String currentState, String input, LinkedList<String> stack, String history) {
         String steps="";
 
-        String currentState="q0";
+        //if character in stack is nonTerminal, derive, if empty and in q1 go to final state and if terminal, match it with tape character
 
 
-        return steps;
+        return steps; //recursive call but return history or null in the end . Here we can debug "false paths  by returning FAILURE followed by history instead of null or something like that
     }
 
 
