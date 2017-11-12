@@ -12,6 +12,7 @@ public class PDA {
     HashMap<String[], ArrayList<String[]>> transitionFunctions;
 
     public PDA (String[] nonTerminals, String[] terminals, String startingSymbol, ArrayList<String[]> productions) {
+
         transitionFunctions = new HashMap<>();
         buildPDA(nonTerminals, terminals, startingSymbol, productions);
 
@@ -65,6 +66,7 @@ public class PDA {
 
     public String toString() {
         String result = "-----------------------Pushdown Automaton----------------------\n";
+
         Set<Map.Entry<String[], ArrayList<String[]> > > entrySet = transitionFunctions.entrySet();
         for (Map.Entry entry : entrySet) {
             result+="\n";
@@ -78,7 +80,17 @@ public class PDA {
         }
 
         return result;
-
     }
+
+    public String processString(String input) {
+        String steps="";
+
+        String currentState="q0";
+
+
+        return steps;
+    }
+
+
 
 }
