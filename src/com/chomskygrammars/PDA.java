@@ -69,10 +69,12 @@ public class PDA {
             result+="\n";
             String[] function = (String[])entry.getKey();
             ArrayList<String[]> functionResults = ( ArrayList<String[]> ) entry.getValue();
-            result+="d("+function[0]+", "+ (function[1].equals("") ? "ε" : function[1]) +", "+ function[2]+") --> {";
+            result+="δ("+function[0]+", "+ (function[1].equals("") ? "ε" : function[1]) +", "+ function[2]+") --> { ";
             for (String[] functionResult : functionResults) {
-                result+= "("+functionResult[0]+", "+(functionResult[1].equals("") ? "ε" : functionResult[1])+")";
+                result+= "("+functionResult[0]+", "+(functionResult[1].equals("") ? "ε" : functionResult[1])+"), ";
             }
+            result = result.substring(0, result.length()-2);
+            result+=" }";
 
         }
 
