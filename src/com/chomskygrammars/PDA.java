@@ -7,9 +7,10 @@ public class PDA {
     //int[3] {q, a, A} --> int[2] {q, S}
     // state q, reading a on the input ("tape"), with A popped from the stack --> new state q and push A to the stack
     HashMap<ArrayList<String>, ArrayList<String[]>> transitionFunctions;
+    String[] nonTerminals;
 
     public PDA (String[] nonTerminals, String[] terminals, String startingSymbol, ArrayList<String[]> productions) {
-
+        this.nonTerminals = nonTerminals;
         transitionFunctions = new HashMap<>();
         buildPDA(nonTerminals, terminals, startingSymbol, productions);
 
@@ -84,26 +85,32 @@ public class PDA {
     public String validateString(String input) {
         LinkedList<String> stack = new LinkedList<>();
         stack.push("Ƶ");
-        return processString("q0", input, stack, "(q0," + input+", Ƶ)");
+        return processString("q0", input, stack, "(q0," + input+", Ƶ)", 0);
     }
 
-    private String processString(String currentState, String input, LinkedList<String> stack, String history) {
+    private String processString(String currentState, String input, LinkedList<String> stack, String history, int treeLevel) {
 
-        //if number of nonterminals on stack is greater than input length, return null
+        if (currentState.equals("q1") && stack.size()==1 && input.length()>0) return null;
+        //if number of nonterminals on stack is greater than input length, return null, improve this...
+        if (stack.size()>(input.length()+10)) return null;
+
+        if (currentState.equals("q2")) {
+            //SUCCESS
+            return history;
+        }
 
         System.out.println("history right now:"+ history+"END");
         System.out.println("Trying: "+stack.peek());
-        // try (state, nonTerminalFromTape, stack)
-        ArrayList<String[]> transitionResult = transitionFunctions.get(new ArrayList<String>(Arrays.asList(currentState, String.valueOf(input.charAt(0)), stack.peek())));
-        if (transitionResult!=null) System.out.println("Worked1: "+currentState+","+String.valueOf(input.charAt(0))+","+stack.peek());
-        if (transitionResult!=null)   input = input.substring(1);
 
-  //      if (transitionResult==null) System.out.println("TESTFAILED: "+currentState+","+String.valueOf(input.charAt(0))+","+stack.peek());
+        //try (state, ε, stack)
+        ArrayList<String[]> transitionResult =  transitionFunctions.get(new ArrayList<>(Arrays.asList(currentState, "", stack.peek())));; //let's try with epsilon transition
+        if (transitionResult!=null) System.out.println("Worked (state, ε, stack) with size "+ transitionResult.size() +": "+currentState+","+""+","+stack.peek());
 
-        //last one didn't work, try (state, ε, stack)
-        if (transitionResult==null) {
-           transitionResult =  transitionFunctions.get(new ArrayList<String>(Arrays.asList(currentState, "", stack.peek())));; //let's try with epsilon transition
-            if (transitionResult!=null) System.out.println("Worked2: "+currentState+","+""+","+stack.peek());
+        //last one didn't work, try (state, nonTerminalFromTape, stack)
+        if (transitionResult==null && input.length()>0) {
+            transitionResult = transitionFunctions.get(new ArrayList<String>(Arrays.asList(currentState, String.valueOf(input.charAt(0)), stack.peek())));
+            if (transitionResult!=null) System.out.println("Worked (state, nonTerminalFromTape, stack): "+currentState+","+String.valueOf(input.charAt(0))+","+stack.peek());
+            if (transitionResult!=null)   input = input.substring(1);
         }
 
         if (transitionResult!=null) {
@@ -113,30 +120,35 @@ public class PDA {
             return null; //no available PDA function for current setting
         }
 
-        if (input.length()==0 && stack.size()==1) {
-            return "Y"+ history;
-        } else if(input.length()==0) {
-            return null;
-        }
-
+        int j=0;
         //iterate through each possible solution and call recursively
         for (String[] result : transitionResult) {
+            j++;
             String temp;
             LinkedList<String> anotherStack = new LinkedList<>(stack);
             for (int i = result[1].length()-1 ; i>=0; i--) {
                 anotherStack.push(String.valueOf(result[1].charAt(i)));
             }
-            System.out.println("PUSHED: "+ result[1]);
-            String anotherHistory = history+ "-->" + "( "+result[0]+","+input+","+ stackToString(anotherStack)+" )";
+            System.out.println("PUSHED: "+ result[1] + ", Tree level: "+ treeLevel+", stack option: "+j);
+            String anotherHistory =new String(history+ "-->" + "( "+result[0]+","+(input.equals("") ? "ε" : input) +","+ stackToString(anotherStack)+" )");
             String anotherInput = new String(input);
-            temp = processString(result[0], anotherInput, anotherStack, anotherHistory);
-            if (temp!=null && temp.charAt(0)=='Y') return temp;
+            String currentstate = new String(result[0]);
+            temp = processString(currentstate, anotherInput, anotherStack, anotherHistory, treeLevel+1);
+            if (temp!=null) return temp;
 
         }
 
-        //if character in stack is nonTerminal, derive, if empty and in q1 go to final state and if terminal, match it with tape character
+        return null;
+    }
 
-        return null; //recursive call but return history or null in the end . Here we can debug "false paths  by returning FAILURE followed by history instead of null or something like that
+    private int nonTerminalCount(LinkedList<String> stack) {
+        int count=0;
+        for (String element : stack) {
+            for (String nonTerminal : nonTerminals) {
+                if (element.equals(nonTerminal)) count++;
+            }
+        }
+        return count;
     }
 
     private String stackToString(LinkedList<String> stack) {

@@ -9,3 +9,5 @@ A->a
 B->AaA
 B->bBB
 B->b
+S->Sa
+S->a
