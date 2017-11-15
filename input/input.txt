@@ -11,3 +11,5 @@ B->bBB
 B->b
 S->Sa
 S->a
+S->b
+A->S

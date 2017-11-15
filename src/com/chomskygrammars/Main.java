@@ -61,8 +61,9 @@ public class Main {
         }
 
         PDA pushDown = new PDA(nonTerminals, terminals, startingSymbol, productions);
-      //  System.out.println(pushDown);
-        System.out.println("FINAL STRING IS:"+ pushDown.validateString("aaaaaaaaaaaaaaaa"));
+      //
+        System.out.println("\n\nACCEPTED STRING COMPUTATION IS: "+ pushDown.validateString("bbb")+"\n");
+        System.out.println(pushDown);
 
     }
 
