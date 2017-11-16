@@ -93,14 +93,14 @@ public class PDA {
 
     private String processString(String currentState, String input, LinkedList<String> stack, String history, int treeLevel) {
 
-        if (currentState.equals("q1") && stack.size()==1 && input.length()>0) return null;
-        //if number of nonterminals on stack is greater than input length, return null
-        if (terminalCount(stack)>input.length()) return null;
-
         if (currentState.equals("q2")) {
             //SUCCESS
             return history;
         }
+
+        if (currentState.equals("q1") && stack.size()==1 && input.length()>0) return null;
+        //if number of nonterminals on stack is greater than input length, return null
+        if (terminalCount(stack)>input.length()) return null;
 
         if (DEBUG) {
             System.out.println("history right now:" + history);
