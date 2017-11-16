@@ -9,6 +9,13 @@ import java.util.Scanner;
 
 public class Main {
 
+    /*
+    Features!
+    -Character 'ε' supported (for example A->ε)
+    -Prints full list of PDA transitions
+    -Can handle thousands of complex rules and long strings without crashing
+    -PDA always has initial state q1 and final state q2
+     */
 
     public static void main(String[] args) {
 
@@ -62,7 +69,7 @@ public class Main {
 
         PDA pushDown = new PDA(nonTerminals, terminals, startingSymbol, productions);
       //
-        System.out.println("\n\nACCEPTED STRING COMPUTATION IS: "+ pushDown.validateString("bbb")+"\n");
+        System.out.println("\n\nSTRING COMPUTATION RESULT:\n"+ pushDown.validateString(inputString)+"\n");
         System.out.println(pushDown);
 
     }
