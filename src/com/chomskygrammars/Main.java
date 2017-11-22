@@ -19,7 +19,6 @@ public class Main {
 
     public static void main(String[] args) {
 
-
         String[] nonTerminals=null;
         String[] terminals = null;
         String startingSymbol="";
@@ -33,8 +32,6 @@ public class Main {
             File f = new File("./input/input.txt");
 
             BufferedReader b = new BufferedReader(new FileReader(f));
-
-
 
             int i=0;
 

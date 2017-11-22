@@ -93,6 +93,8 @@ public class PDA {
 
     private String processString(String currentState, String input, LinkedList<String> stack, String history, int treeLevel) {
 
+        if (treeLevel>500) return null; //handles hard to deal with loops and prevents StackOverflow
+
         if (currentState.equals("q2")) {
             //SUCCESS
             return history;

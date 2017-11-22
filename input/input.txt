@@ -1,8 +1,12 @@
+S,A
+a,b,c,d,e
 S
-a,b
-S
-aa
-S->aSa
-S->a
-S->ε
 
+S->AaAbAcAdAeA
+A->ε
+A->Aa
+A->b
+A->c
+A->AB
+B->A
+B->e
