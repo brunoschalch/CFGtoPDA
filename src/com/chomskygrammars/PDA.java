@@ -7,7 +7,7 @@ public class PDA {
     private static final boolean DEBUG = false;
 
     //int[3] {q, a, A} --> int[2] {q, S}
-    // state q, reading a on the input ("tape"), with A popped from the stack --> new state q and push A to the stack
+    // state q, reading a on the input ("tape"), with A popped from the stack --> new state q and push S to the stack
     HashMap<ArrayList<String>, ArrayList<String[]>> transitionFunctions;
     String[] terminals;
 
